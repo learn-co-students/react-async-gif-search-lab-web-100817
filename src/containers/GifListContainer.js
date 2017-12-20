@@ -1,42 +1,48 @@
-import React from 'react'
+import React from 'react';
 import GifList from '../components/GifList'
 import GifSearch from '../components/GifSearch'
 
-const URL = `http://api.giphy.com/v1/gifs/search?q=snacks&api_key=dc6zaTOxFJmzC`
-
 class GifListContainer extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      searchTerm: '',
-      gifs: []
-    }
+  state = {
+    searchTerm: "dolphin",
+    results: [],
   }
 
-  gifFetch = () => {
-    fetch(`http://api.giphy.com/v1/gifs/search?q=snacks&api_key=dc6zaTOxFJmzC`)
-    .then(res => res.json()).then(response => this.setState({ gifs: response.data }))}
+  // getData = () => {
+  //   if (this.state.searchTerm !== "") {
+  //     fetch(`http://api.giphy.com/v1/gifs/search?q=${this.state.searchTerm}&api_key=dc6zaTOxFJmzC`)
+  //     .then(res => res.json())
+  //     .then(results => this.setState({ results: results.data }))
+  //   } else  {
+  //     fetch(`http://api.giphy.com/v1/gifs/search?q=dolphins&api_key=dc6zaTOxFJmzC`)
+  //     .then(res => res.json())
+  //     .then(results => this.setState({ results: results.data }))
+  //   }
+  // }
 
+  getData = () => {
+    fetch(`http://api.giphy.com/v1/gifs/search?q=${this.state.searchTerm}&api_key=dc6zaTOxFJmzC`)
+      .then(res => res.json())
+      .then(results => this.setState({ results: results.data }))
+  }
 
   componentDidMount = () => {
-    this.gifFetch();
+    this.getData();
   }
 
-  handleSubmitSearch = (search) => {
+  updateSearchTerm = (search) => {
     this.setState({
       searchTerm: search
-    })
+    }, this.getData)
   }
 
-  render (){
-    console.log(this.state.searchTerm)
+  render() {
+    console.log(this.state.results)
     return (
       <div>
-      <GifSearch
-      handleSubmit={this.handleSubmitSearch}
-      />
-      <p>GifListContainer</p>
-      <GifList gifs={this.state.gifs} />
+      <div >GifListContainer</div>
+      <GifSearch updateSearchTerm={this.updateSearchTerm} />
+      <GifList results={this.state.results}/>
       </div>
     )
   }

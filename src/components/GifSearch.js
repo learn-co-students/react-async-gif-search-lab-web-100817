@@ -1,12 +1,9 @@
-import React from 'react'
+import React from 'react';
 
 class GifSearch extends React.Component {
-  constructor(props) {
-    super(props);
 
-    this.state = {
-      searchTerm: ''
-    }
+  state = {
+    searchTerm: "",
   }
 
   handleChange = (event) => {
@@ -17,18 +14,17 @@ class GifSearch extends React.Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    this.props.handleSubmitSearch(this.state.searchTerm)
+    this.props.updateSearchTerm(this.state.searchTerm);
   }
 
   render() {
     return (
       <form onSubmit={this.handleSubmit}>
-      <input type='text' onChange={this.handleChange}></input>
-      <input type='submit'></input>
+        <input type="text" onChange={this.handleChange} name={this.state.searchTerm}></input>
+        <input type="submit"></input>
       </form>
     )
   }
-
 }
 
 export default GifSearch;
